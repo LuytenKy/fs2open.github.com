@@ -210,25 +210,24 @@ void camera::set_object_host(object *objp, int n_object_host_submodel)
 	object_host_submodel = n_object_host_submodel;
 	set_custom_position_function(NULL);
 	set_custom_orientation_function(NULL);
-	if(n_object_host_submodel > 0)
+
+	if (n_object_host_submodel >= 0 && objp != nullptr && objp->type == OBJ_SHIP) 
 	{
-		if(objp != nullptr && objp->type == OBJ_SHIP)
+		ship_subsys* ssp = GET_FIRST(&Ships[objp->instance].subsys_list);
+		while (ssp != END_OF_LIST(&Ships[objp->instance].subsys_list)) 
 		{
-			ship_subsys* ssp = GET_FIRST(&Ships[objp->instance].subsys_list);
-			while ( ssp != END_OF_LIST( &Ships[objp->instance].subsys_list ) )
+			if (ssp->system_info->subobj_num == n_object_host_submodel) 
 			{
-				if(ssp->system_info->subobj_num == n_object_host_submodel)
+				if (ssp->system_info->type == SUBSYSTEM_TURRET) 
 				{
-					if(ssp->system_info->type == SUBSYSTEM_TURRET)
-					{
-						set_custom_position_function(get_turret_cam_pos);
-						set_custom_orientation_function(get_turret_cam_orient);
-					}
+					set_custom_position_function(get_turret_cam_pos);
+					set_custom_orientation_function(get_turret_cam_orient);
 				}
-				ssp = GET_NEXT( ssp );
 			}
-		} 
-		else if (Use_model_eyepoint_for_set_camera_host && object_host.isValid()) 
+			ssp = GET_NEXT(ssp);
+		}
+	}
+	else if (Use_model_eyepoint_for_set_camera_host && object_host.isValid()) 
 	{
 			const object* host = object_host.objp();
 
@@ -239,7 +238,6 @@ void camera::set_object_host(object *objp, int n_object_host_submodel)
 
 			set_position(&eye_pos);
 			set_rotation(&eye_orient);
-		}
 	}
 }
 

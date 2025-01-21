@@ -162,6 +162,7 @@ color Overhead_line_colors[MAX_SHIP_SECONDARY_BANKS];
 bool Preload_briefing_icon_models;
 EscapeKeyBehaviorInOptions escape_key_behavior_in_options;
 
+
 #ifdef WITH_DISCORD
 static auto DiscordOption __UNUSED = options::OptionBuilder<bool>("Game.Discord",
                      std::pair<const char*, int>{"Discord Presence", 1754},
@@ -505,12 +506,11 @@ void parse_mod_table(const char *filename)
 					mprintf(("Game Settings Table: Using identity orientation for set-camera-facing\n"));
 				}
 			}
-
-			if (optional_string("Use model eyepoint for set-camera-host:")) 
+			if (optional_string("$Use model eyepoint for set-camera-host:")) 
 			{
 				stuff_boolean(&Use_model_eyepoint_for_set_camera_host);
 				if (Use_model_eyepoint_for_set_camera_host)
-					mprintf(("Game Settings Table: Using model eyepoint for set-camera-host\n"));
+					mprintf(("Game Settings Table: Use model eyepoint for set-camera-host\n"));
 			}
 
 			if (optional_string("$Show-subtitle uses pixels:")) {

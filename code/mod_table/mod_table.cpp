@@ -34,6 +34,7 @@ bool Cutscene_camera_displays_hud;
 bool Alternate_chaining_behavior;
 bool Fixed_chaining_to_repeat;
 bool Use_host_orientation_for_set_camera_facing;
+bool Use_model_eyepoint_for_set_camera_host;
 bool Always_show_directive_value_count;
 bool Use_3d_ship_select;
 bool Use_3d_ship_icons;
@@ -503,6 +504,13 @@ void parse_mod_table(const char *filename)
 				} else {
 					mprintf(("Game Settings Table: Using identity orientation for set-camera-facing\n"));
 				}
+			}
+
+			if (optional_string("Use model eyepoint for set-camera-host:")) 
+			{
+				stuff_boolean(&Use_model_eyepoint_for_set_camera_host);
+				if (Use_model_eyepoint_for_set_camera_host)
+					mprintf(("Game Settings Table: Using model eyepoint for set-camera-host\n"));
 			}
 
 			if (optional_string("$Show-subtitle uses pixels:")) {
@@ -1561,6 +1569,7 @@ void mod_table_reset()
 	Alternate_chaining_behavior = false;
 	Fixed_chaining_to_repeat = false;
 	Use_host_orientation_for_set_camera_facing = false;
+	Use_model_eyepoint_for_set_camera_host = false;
 	Always_show_directive_value_count = false;
 	Default_ship_select_effect = 2;
 	Default_weapon_select_effect = 2;
@@ -1714,5 +1723,8 @@ void mod_table_set_version_flags()
 	}
 	if (mod_supports_version(24, 2, 0)) {
 		Fix_scripted_velocity = true;		// more sensical behavior
+	}
+	if (mod_supports_version(25, 0, 0)) {
+		Use_model_eyepoint_for_set_camera_host = true;
 	}
 }

@@ -227,6 +227,18 @@ void camera::set_object_host(object *objp, int n_object_host_submodel)
 				}
 				ssp = GET_NEXT( ssp );
 			}
+		} 
+		else if (Use_model_eyepoint_for_set_camera_host && object_host.isValid()) 
+	{
+			const object* host = object_host.objp();
+
+			vec3d eye_pos;
+			matrix eye_orient;
+
+			object_get_eye(&eye_pos, &eye_orient, host, false, true);
+
+			set_position(&eye_pos);
+			set_rotation(&eye_orient);
 		}
 	}
 }
